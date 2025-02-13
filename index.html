@@ -1,10 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Text Styler</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css">
+    <style>
+        .editableText {
+            display: inline-block;
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #999;
+            font-size: 16px;
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none;
+            margin: 5px;
+            user-select: text;
+            position: relative;
+        }
+        #controls {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        #closePopup {
+            display: block;
+            margin-top: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    TEST
+<h2>텍스트 스타일 변경</h2>
+<div contenteditable="true" class="editableText" id="editableText">첫 번째 텍스트</div>
+
+<div id="controls">
+    <label>색상 선택:</label>
+    <input type="text" id="colorPicker">
+    <br>
+    <label>글씨 크기:</label>
+    <input type="range" id="fontSize" min="5" max="50" value="16">
+    <br>
+    <button id="toggleBold">진하게</button>
+    <button id="toggleItalic">기울이기</button>
+    <button id="toggleUnderline">밑줄</button>
+    <br>
+    <label>배경 색상:</label>
+    <input type="text" id="bgColorPicker">
+    <br>
+    <label>글꼴 선택:</label>
+    <select id="fontFamily">
+        <option value="Arial">Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Courier New">Courier New</option>
+    </select>
+    <br>
+    <button id="resetStyles">초기화</button>
+    <button id="closePopup">닫기</button>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#editableText").on("mouseup", function() {
+            let selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                let parentBox = $("#editableText").get(0).getBoundingClientRect();
+                $("#controls").css({
+                    top: parentBox.bottom + window.scrollY + 5,
+                    left: parentBox.left + window.scrollX
+                }).fadeIn();
+            }
+        });
+
+        $("#closePopup").on("click", function() {
+            $("#controls").fadeOut();
+        });
+
+        $(document).on("click", function(event) {
+            if (!$(event.target).closest("#controls, #editableText").length) {
+                $("#controls").fadeOut();
+            }
+        });
+
+        function applyStyle(command, value = null) {
+            document.execCommand(command, false, value);
+        }
+
+        $("#colorPicker").spectrum({
+            color: "#000000",
+            showPalette: true,
+            showInput: true,
+            palette: [['#000', '#444', '#666', '#999', '#ccc', '#eee', '#f3f3f3', '#fff'], ['#f00', '#f90', '#ff0', '#0f0', '#0ff', '#00f', '#90f', '#f0f']],
+            change: function(color) {
+                applyStyle("foreColor", color.toHexString());
+            }
+        });
+
+        $("#bgColorPicker").spectrum({
+            color: "#ffffff",
+            showPalette: true,
+            showInput: true,
+            palette: [['#000', '#444', '#666', '#999', '#ccc', '#eee', '#f3f3f3', '#fff'], ['#f00', '#f90', '#ff0', '#0f0', '#0ff', '#00f', '#90f', '#f0f']],
+            change: function(color) {
+                applyStyle("backColor", color.toHexString());
+            }
+        });
+
+        $("#fontSize").on("input", function() {
+            applyStyle("fontSize", $(this).val() + "px");
+        });
+
+        $("#toggleBold").on("click", function() {
+            applyStyle("bold");
+        });
+
+        $("#toggleItalic").on("click", function() {
+            applyStyle("italic");
+        });
+
+        $("#toggleUnderline").on("click", function() {
+            applyStyle("underline");
+        });
+    });
+</script>
 </body>
 </html>
