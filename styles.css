@@ -1,0 +1,70 @@
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+/* 편집 가능한 텍스트 박스 */
+.editableText {
+    display: inline-block;
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 컨트롤 패널 스타일 */
+#controls {
+    display: none;
+    position: absolute;
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    width: 250px;
+}
+
+/* 컨트롤 요소 정렬 */
+label, select, input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* 버튼 그룹 */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+/* 버튼 스타일 */
+button {
+    flex: 1;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* 닫기 버튼 색상 */
+#closePopup {
+    background: #dc3545;
+}
+
+#closePopup:hover {
+    background: #a71d2a;
+}
